@@ -3,7 +3,7 @@ By Chen Zhang, Xiaofeng Cao, Weiyang Liu, Ivor Tsang, James Kwok
 ### License
 MINT_NonparametricTeaching is released under the MIT License (refer to the LICENSE file for details).
 ### Update
-- 20231017: We uploaded the resource files for the Poster \& Slides.
+- 20231021: We uploaded the resource files for the Poster \& Slides.
 - 20231017: We updated some resources in Nonparametric Teaching for Multiple Learners.
 
 ### Visualization of Greedy Functional Teaching algorithm
