@@ -59,7 +59,7 @@
 \usepackage[orientation=landscape,size=custom,width=155,height=90,scale=1.4]{beamerposter}
 \listfiles
 \graphicspath{{figure/}}
-
+\usepackage{ragged2e}
 
 \newenvironment<>{thmblock}[2][1\textwidth]{%
   \setlength{\textwidth}{#1}
@@ -105,6 +105,7 @@ It can be thought of as an \alert{inverse} of machine learning, in the sense tha
 \vspace{6mm}
 
 Depending on how teachers and learners \alert{interact} with each other, MT can be carried out in either\begin{itemize}
+\justifying
     \item {\color{blue} batch} fashion which focuses on \alert{single-round} interaction, that is, the most representative and effective teaching dataset are designed to be fed to the learner in one shot, or 
     \item {\color{blue} iterative} fashion where an iterative teacher would feed  examples based on learners' status (current learnt models) \alert{round by round}, such that the learner can converge to a target model within fewer rounds.
 \end{itemize}
@@ -127,6 +128,7 @@ Previous nonparametric teaching algorithms merely focus on the \alert{single-lea
 \vspace{4mm}
       {\bf \color{blue} Main Contribution}: 
 \begin{itemize}
+\justifying
 \item By analyzing general \alert{vector-valued RKHS}, we study the {\bf multi-learner nonparametric teaching} (MINT), where the teacher selects examples based on a \alert{vector-valued target function} (each component of it is a scalar-valued one for a single learner) such that \alert{multiple} learners can learn its components simultaneously in a fast speed. 
 \item Allowing the \alert{communication} across multiple learners, that is, learners are allowed to carry out \alert{linear combination} on current learnt functions of all learners, we investigate a communicated MINT where the teacher not only selects examples but also constructs a \alert{matrix} as the guide of communication in each iteration. 
 \item Under a mild assumption, we \alert{theoretically} prove the efficiency of our \alert{multi-learner generalization} of nonparametric teaching. We also \alert{empirically} demonstrate its applicability and efficiency in extensive multi-learner experiments.
