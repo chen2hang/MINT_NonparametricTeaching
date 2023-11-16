@@ -115,9 +115,9 @@ Previous nonparametric teaching algorithms \cite{Zhang2023NIMT} merely focus on 
 {\bf \color{blue} Main Contribution}: 
 \begin{itemize}
 \justifying
-\item By analyzing general \alert{vector-valued RKHS}, we study the {\bf multi-learner nonparametric teaching} (MINT), where the teacher selects examples based on a \alert{vector-valued target function} (each component of it is a scalar-valued one for a single learner) such that \alert{multiple} learners can learn its components simultaneously in a fast speed. 
-\item Allowing the \alert{communication} across multiple learners, that is, learners are allowed to carry out \alert{linear combination} on current learnt functions of all learners, we investigate a communicated MINT where the teacher not only selects examples but also constructs a \alert{matrix} as the guide of communication in each iteration. 
-\item Under a mild assumption, we \alert{theoretically} prove the efficiency of our \alert{multi-learner generalization} of nonparametric teaching. We also \alert{empirically} demonstrate its applicability and efficiency in extensive multi-learner experiments.
+\item By analyzing general \alert{vector-valued RKHS} \cite{carmeli2006vector, minh2011vector, alvarez2012kernels}, we study the {\bf multi-learner nonparametric teaching} (MINT), where the teacher selects examples based on a \alert{vector-valued target function} (each component of the vector-valued function is a scalar-valued function for a single learner), such that \alert{multiple} learners can learn their own target models simultaneously. 
+\item By enabling the \alert{communication} among multiple learners, learners can update themselves with a \alert{linear combination} of current learnt functions of all learners \cite{gehler2009feature,cesamultitask}. We study a communicated MINT where the teacher not only selects examples but also injects the \alert{guidance} of communication. 
+\item Under mild assumptions, we characterize the \alert{efficiency} of our \alert{multi-learner generalization} of nonparametric teaching. More importantly, we also \alert{empirically} demonstrate its efficiency.
 \end{itemize}
 \end{frame}
 %------------------------------------------------
@@ -159,7 +159,7 @@ In tackling MINT, we begin by examining a basic scenario in which \alert{multipl
 \begin{block}{Lemma 3 (Sufficient Descent for multi-learner RFT)}
 Suppose there are $d$ learners, and the example \alert{mean} for each learner is $\mu_i=\mathbb{E}_{x_i\sim\mathbb{P}_i(x_i)}(x_i)<\infty$, and the \alert{variance} $\sigma_i^2=\mathbb{E}_{x_i\sim\mathbb{P}_i(x_i)}(x_i-\mu_i)^2<\infty, i\in\mathbb{N}_d$. Under the \alert{Lipschitz smooth and bounded kernel assumptions}, if $\eta^t_i\leq \frac{1}{2L_\mathcal{L}\cdot M_K}$ for all $i\in\mathbb{N}_d$, then RFT teachers can, \alert{on average}, reduce the multi-learner loss $\mathcal{L}(\bm{f})$ by:
 \begin{eqnarray}
-\resizebox{.94\hsize}{!}{		$\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^{t+1})-\mathcal{L}(\bm{f}^t)\right]\leq-\frac{\tilde{\eta}^t}{2}\sum_{i=1}^d (m_{i,t}(\mu_i)+\frac{m_{i,t}''(\mu_i)}{2}\sigma_i^2)\leq-\frac{\tilde{\eta}^t d}{2}\cdot\min_{i\in\mathbb{N}_d} \left(m_{i,t}(\mu_i)+\frac{m_{i,t}''(\mu_i)}{2}\sigma_i^2\right)$},
+\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^{t+1})-\mathcal{L}(\bm{f}^t)\right]\leq-\frac{\tilde{\eta}^t}{2}\sum_{i=1}^d (m_{i,t}(\mu_i)+\frac{m_{i,t}''(\mu_i)}{2}\sigma_i^2),
 \end{eqnarray}
 where $\tilde{\eta}^t=\min_{i\in\mathbb{N}_d}\eta^t_i$ and $m_{i,t}(\dot{x})\mathrel{\mathop:}= E_{\dot{x}}[(\left.\nabla_f\mathcal{L}_i(f)\right|_{f=f^{t}_i})^2]$.
 \end{block}
@@ -172,14 +172,14 @@ Suppose the \alert{vector-valued} model for multiple learners is initialized wit
 	\begin{eqnarray}\label{eqcpft}
 		\min_{i\in\mathbb{N}_d} \left(m_{i,t-1}(\mu_i)+m_{i,t-1}''(\mu_i)\sigma_i^2/2\right)\leq2\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^0)\right]/(d\dot{\eta}t),
 	\end{eqnarray}
-	where $0<\dot{\eta}=\underset{l\in\{0\}\bigcup\mathbb{N}_{t-1}}{\min}\,\tilde{\eta}^l\leq 1/(2L_\mathcal{L}\cdot M_K)$, and given a small constant $\epsilon>0$ it would take approximately $\mathcal{O}\left(2(\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^0)\right]-\epsilon)/(d\dot{\eta}\min_{i\in\mathbb{N}_d} \left(m_{i,t-1}(\mu_i)+m_{i,t-1}''(\mu_i)\sigma_i^2/2\right))\right)$ iterations to reduce the \alert{multi-learner} loss $\mathcal{L}$ to a \alert{sufficiently small} value and to reach a \alert{stationary point} in terms of $\mathcal{L}$.
+	where $0<\dot{\eta}=\underset{l\in\{0\}\bigcup\mathbb{N}_{t-1}}{\min}\,\tilde{\eta}^l\leq 1/(2L_\mathcal{L}\cdot M_K)$, and given a small constant $\epsilon>0$ it would take approximately $\mathcal{O}(2\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}\left(\bm{f}^0)\right]/(d\dot{\eta}\epsilon)\right)$ iterations to reach a \alert{stationary point}.
 \end{block} 
 \end{frame}
 
 \begin{frame}{Cont.}
 \begin{block}{Lemma 5 (Sufficient Descent for multi-learner GFT)} Under the same assumption, if $\eta^t_i\leq \frac{1}{2L_\mathcal{L}\cdot M_K}$ for all $i\in\mathbb{N}_d$, the GFT teachers can achieve a \alert{greater} reduction in the multi-learner loss $\mathcal{L}$:
 	\begin{eqnarray}
-		\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^{t+1})-\mathcal{L}(\bm{f}^t)\right]\leq-\frac{\tilde{\eta}^t}{2}\sum_{i=1}^d m_{i,t}({x^t_i}^*)\leq-\frac{\tilde{\eta}^t d}{2}\cdot\min_{i\in\mathbb{N}_d} m_{i,t}({x^t_i}^*),
+		\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^{t+1})-\mathcal{L}(\bm{f}^t)\right]\leq-\frac{\tilde{\eta}^t}{2}\sum_{i=1}^d m_{i,t}({x^t_i}^*),
 	\end{eqnarray}
 	where $\tilde{\eta}^t$ and $m_{i,t}(\cdot)$ retain their previous meaning.
 \end{block} 
@@ -190,7 +190,7 @@ Suppose the \alert{vector-valued} model for multiple learners is initialized wit
 	\begin{eqnarray}\label{eqcgft}
 		\min_{i\in\mathbb{N}_d} m_{i,t-1}({x^{t-1}_i}^*)\leq\frac{2}{d\dot{\eta}t}\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^0)\right]+\frac{1}{d}\sum_{l=0}^{t-1}\sum_{i=1}^d \left(\|{x^l_i}^*-\mu_i\|_2\right),
 	\end{eqnarray}
-	where $\dot{\eta}$ has the same definition as before, and given a small constant $\epsilon>0$ it would need around $\mathcal{O}\left(2(\mathbb{E}_{\bm{x}\sim[\mathbb{P}_i(x_i)]^d}\left[\mathcal{L}(\bm{f}^0)\right]-\epsilon)/(d\dot{\eta}\min_{i\in\mathbb{N}_d} m_{i,t-1}({x^{t-1}_i}^*))\right)$ iterations to decrease the \alert{multi-learner} loss $\mathcal{L}$ to a \alert{sufficiently small} value and to reach a \alert{stationary point} in terms of $\mathcal{L}$.
+	where $\dot{\eta}$ has the same definition as before.
 \end{block} 
 \end{frame}
 %------------------------------------------------
